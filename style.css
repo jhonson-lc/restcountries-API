@@ -1,0 +1,338 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;800&display=swap');
+
+:root {
+  --DarkModeElements: hsl(209, 23%, 22%);
+  --DarkModeBackground: hsl(207, 26%, 17%);
+  --LightModeText: hsl(200, 15%, 8%);
+  --LightModeInput: hsl(0, 0%, 52%);
+  --LightModeBackground: hsl(0, 0%, 98%);
+  --DarkModeText: hsl(0, 0%, 100%);
+  --LightModeElements: hsl(0, 0%, 100%);
+  --TextItems: 14px;
+  --TextDetails: 16px;
+  font-size: 10px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html[data-theme='dark'] {
+  --color-bg: var(--DarkModeBackground);
+  --color-text: var(--DarkModeText);
+  --color-elements: var(--DarkModeElements);
+  --color-input: var(--DarkModeText);
+  --color-switch-bg: var(--LightModeBackground);
+  --color-switch-text: var(--LightModeText);
+}
+
+html[data-theme='light'] {
+  --color-bg: var(--LightModeBackground);
+  --color-text: var(--LightModeText);
+  --color-elements: var(--LightModeElements);
+  --color-input: var(--LightModeInput);
+  --color-switch-bg: var(--DarkModeBackground);
+  --color-switch-text: var(--DarkModeText);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: var(--DarkModeBackground);
+    --color-text: var(--DarkModeText);
+    --color-elements: var(--DarkModeElements);
+    --color-input: var(--DarkModeText);
+    --color-switch-bg: var(--LightModeBackground);
+    --color-switch-text: var(--LightModeText);
+  }
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+#button__theme {
+  z-index: 1;
+  cursor: pointer;
+}
+
+#darktheme,
+#lighttheme {
+  text-align: end;
+  width: 7.5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  display: inline-block;
+  background-color: var(--color-switch-bg);
+  color: var(--color-switch-text);
+  padding: 1rem 0.5rem;
+  border-radius: 25rem;
+  position: relative;
+  z-index: -1;
+}
+
+.theme__icon {
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  padding: 1rem;
+  border-radius: 25rem;
+}
+
+#lighttheme i {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  animation: left 0.4s ease-out;
+}
+
+@keyframes left {
+  0% {
+    left: 4.25rem;
+  }
+  100% {
+    left: 0.25rem;
+  }
+}
+
+#darktheme i {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  animation: right 0.4s ease-out;
+}
+
+@keyframes right {
+  0% {
+    right: 4.25rem;
+  }
+  100% {
+    right: 0.25rem;
+  }
+}
+
+#darktheme {
+  text-align: start;
+}
+
+.hero {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-elements);
+  padding: 2rem 5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.23);
+  z-index: 9999;
+}
+
+.container {
+  padding: 3rem 5rem;
+  position: relative;
+}
+
+.filters {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.filters__search {
+  position: relative;
+}
+.filters__search i {
+  font-size: 1.5rem;
+  color: var(--color-input);
+  position: absolute;
+  top: 1.2rem;
+  left: 1.5rem;
+}
+
+#searchCountry {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.23);
+  font-family: 'Nunito', sans-serif;
+  border: none;
+  outline: none;
+  padding: 1.2rem 1rem 1.2rem 5rem;
+  background-color: var(--color-elements);
+  color: var(--color-text);
+  font-weight: 300;
+  width: 35rem;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+#searchCountry::placeholder {
+  color: var(--color-text);
+}
+
+.filters__select {
+  position: relative;
+}
+
+#select__continent {
+  font-family: 'Nunito', sans-serif;
+  border: none;
+  outline: none;
+  color: var(--color-text);
+  font-weight: 300;
+  width: 15rem;
+  font-size: 1.2rem;
+  appearance: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+#select__continent span {
+  z-index: -1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.23);
+  position: relative;
+  border-radius: 0.5rem;
+  padding: 1.2rem;
+  background-color: var(--color-elements);
+  display: block;
+  cursor: pointer;
+}
+
+.display__none {
+  display: none;
+}
+
+#select__continent ul {
+  border-radius: 0.5rem;
+  position: absolute;
+  background-color: var(--color-elements);
+  padding: 1rem;
+  margin-top: 1rem;
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.23);
+}
+
+#select__continent li {
+  list-style: none;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+
+.select_arrow {
+  position: absolute;
+  z-index: -1;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border: solid var(--color-text);
+  border-width: 0 0.2rem 0.2rem 0;
+  display: inline-block;
+  padding: 0.3rem;
+  transform: rotate(45deg);
+}
+
+.cards__countries {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+  grid-auto-rows: 40rem;
+  grid-gap: 5rem;
+  margin-top: 2rem;
+}
+
+.card {
+  background-color: var(--color-elements);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+}
+
+.card__des {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.card h4 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.card_Cou {
+  font-size: 1.4rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+}
+
+.card_Din {
+  font-weight: 300;
+}
+
+.card img {
+  width: 100%;
+  min-height: 20rem;
+  max-height: 20rem;
+  object-fit: cover;
+}
+
+#container__modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 111111;
+}
+
+.modal {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-bg);
+  padding: 6rem;
+}
+
+.modal__btnback {
+  font-family: 'Nunito', sans-serif;
+  text-align: center;
+  display: block;
+  padding: 0.5rem 2rem;
+  border: none;
+  outline: none;
+  background-color: var(--color-elements);
+  color: var(--color-text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+}
+
+.modal__btnback i {
+  padding-right: 1rem;
+}
+
+.modal__pais {
+  margin-top: 6rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 6rem;
+}
+
+.modal__pais img {
+  width: 60rem;
+  object-fit: cover;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.modal__des {
+  display: flex;
+  flex-direction: column;
+  color: var(--color-text);
+  justify-content: center;
+}
+
+.modal__des h4 {
+  font-size: 2.5rem;
+}
+
+.modal_Bor {
+  text-align: center;
+  padding: 0.5rem 2rem;
+  font-size: 1.2rem;
+  border: none;
+  outline: none;
+  background-color: var(--color-elements);
+  color: var(--color-text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
