@@ -148,26 +148,25 @@ const mostrarModal = paisModal => {
   const template__modal = document.getElementById('template__modal');
   const container__modal = document.getElementById('container__modal');
   const fragment = document.createDocumentFragment();
-  let country = '';
 
   container__modal.textContent = '';
 
   data = datos.filter(pais => {
     const clone = template__modal.content.cloneNode(true);
     if (pais.name.common === paisModal) {
-      country = pais;
       clone.querySelector('.modal__pais img').setAttribute('src', pais.flags.png);
       clone.querySelector('.modal__des h4').textContent = pais.name.common;
       fragment.appendChild(clone);
+      return clone;
     }
   });
 
   container__modal.appendChild(fragment);
-  mostrarDescripcion();
-  mostrarBorders(country);
+  mostrarDescripcion(data[0]);
+  mostrarBorders(data[0]);
 };
 
-const mostrarDescripcion = () => {
+const mostrarDescripcion = data => {
   const items = [
     'Native Name',
     'Population',
@@ -186,7 +185,45 @@ const mostrarDescripcion = () => {
 
   items.forEach(item => {
     const clone = template__spanModal.content.cloneNode(true);
-    clone.querySelector('.modal_Character').textContent = item;
+    clone.querySelector('.modal_Character').textContent = `${item}: `;
+
+    if (item === 'Population') {
+      clone.querySelector('.modal__Pop').textContent = data.population;
+    }
+    if (item === 'Native Name') {
+      let i = Object.values(data.name.nativeName);
+      i.forEach(nN => {
+        clone.querySelector('.modal__Pop').textContent = nN.common;
+      });
+    }
+    if (item === 'Region') {
+      clone.querySelector('.modal__Pop').textContent = data.region;
+    }
+    if (item === 'Sub Region') {
+      clone.querySelector('.modal__Pop').textContent = data.subregion;
+    }
+    if (item === 'Capital') {
+      clone.querySelector('.modal__Pop').textContent = data.capital;
+    }
+    if (item === 'Top Level Domain') {
+      clone.querySelector('.modal__Pop').textContent = data.tld;
+    }
+    if (item === 'Currencies') {
+      let crr = Object.values(data.currencies);
+      let namesCurrencies = [];
+      crr.forEach(ee => {
+        namesCurrencies.push(ee.name);
+      });
+      clone.querySelector('.modal__Pop').textContent = namesCurrencies.join(',');
+    }
+    if (item === 'Languages') {
+      let lang = Object.values(data.languages);
+      let allLanguages = [];
+      lang.forEach(ee => {
+        allLanguages.push(ee);
+      });
+      clone.querySelector('.modal__Pop').textContent = allLanguages.join(',');
+    }
 
     fragmentModal.appendChild(clone);
   });
@@ -203,13 +240,24 @@ const mostrarBorders = pais => {
   if (pais.borders) {
     pais.borders.forEach(bor => {
       const clone = template__bordersModal.content.cloneNode(true);
-      clone.querySelector('.modal_Bor').textContent = bor;
+      clone.querySelector('.modal_Bor').textContent = paisCca3(bor);
       fragment.appendChild(clone);
     });
   } else {
     const clone = template__bordersModal.content.cloneNode(true);
-    clone.querySelector('.modal_Bor').textContent = 'NO HAY BORDERS';
+    clone.querySelector('.modal_Bor').textContent = 'No bordering countries';
     fragment.appendChild(clone);
   }
   container.appendChild(fragment);
+};
+
+const paisCca3 = cca3Pais => {
+  let border = datos.filter(item => {
+    if (item.cca3 === cca3Pais) {
+      return item;
+    } else {
+      return;
+    }
+  });
+  return border[0].name.common;
 };
