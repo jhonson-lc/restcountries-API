@@ -1,4 +1,6 @@
-let datos = {};
+import fecthAPI from './fetch/fecthAPI.js';
+
+let datos = [];
 
 document.addEventListener('click', e => {
   if (e.target.matches('#button__theme')) {
@@ -30,7 +32,12 @@ document.addEventListener('click', e => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  dataCountries();
+  fecthAPI().then(data => {
+    data.forEach(item => {
+      datos.push(item);
+    });
+    mostrarCards(data);
+  });
 });
 
 document.addEventListener('keyup', e => {
@@ -40,9 +47,10 @@ document.addEventListener('keyup', e => {
   if (e.target.matches('#searchCountry')) {
     const paisB = e.target.value;
     if (paisB) {
-      return buscarPais(paisB);
+      buscarPais(paisB);
+    } else {
+      mostrarCards(datos);
     }
-    mostrarCards(datos);
   }
 });
 
@@ -59,11 +67,11 @@ const cambiarTema = () => {
 
   if (actualTema === 'light') {
     cambiarTema = 'dark';
-    mostrarBtnTheme(cambiarTema);
   } else {
     cambiarTema = 'light';
-    mostrarBtnTheme(cambiarTema);
   }
+
+  mostrarBtnTheme(cambiarTema);
 
   document.documentElement.setAttribute('data-theme', cambiarTema);
   localStorage.setItem('theme', cambiarTema);
@@ -94,19 +102,6 @@ const cambiarRegion = e => {
   mostrarMenu();
 };
 
-const dataCountries = async () => {
-  try {
-    const res = await fetch('https://restcountries.com/v3.1/all');
-    const data = await res.json();
-    datos = data;
-    mostrarCards(data);
-  } catch (e) {
-    console.log(e);
-  } finally {
-    console.log('END');
-  }
-};
-
 const mostrarCards = data => {
   const template__countries = document.getElementById('template__countries');
   const fragment = document.createDocumentFragment();
@@ -129,12 +124,12 @@ const mostrarCards = data => {
 };
 
 const filtrarRegion = region => {
-  data = datos.filter(pais => pais.region === region);
+  let data = datos.filter(pais => pais.region === region);
   mostrarCards(data);
 };
 
 const buscarPais = paisBuscado => {
-  data = datos.filter(pais => {
+  let data = datos.filter(pais => {
     if (pais.name.common.toLowerCase().indexOf(paisBuscado) === -1) {
       return;
     } else {
@@ -151,7 +146,7 @@ const mostrarModal = paisModal => {
 
   container__modal.textContent = '';
 
-  data = datos.filter(pais => {
+  let data = datos.filter(pais => {
     const clone = template__modal.content.cloneNode(true);
     if (pais.name.common === paisModal) {
       clone.querySelector('.modal__pais img').setAttribute('src', pais.flags.png);
@@ -160,7 +155,6 @@ const mostrarModal = paisModal => {
       return clone;
     }
   });
-
   container__modal.appendChild(fragment);
   mostrarDescripcion(data[0]);
   mostrarBorders(data[0]);
@@ -179,34 +173,36 @@ const mostrarDescripcion = data => {
   ];
   const template__spanModal = document.getElementById('template__spanModal');
   const fragmentModal = document.createDocumentFragment();
-  const modal__des_p1 = document.querySelector('.modal__des-p1');
+  const modal__des_p2 = document.querySelector('.modal__des-p1');
 
-  modal__des_p1.textContent = '';
+  modal__des_p2.textContent = '';
 
   items.forEach(item => {
     const clone = template__spanModal.content.cloneNode(true);
     clone.querySelector('.modal_Character').textContent = `${item}: `;
 
+    const { population, name, region, subregion, capital, tld } = data;
+
     if (item === 'Population') {
-      clone.querySelector('.modal__Pop').textContent = data.population;
+      clone.querySelector('.modal__Pop').textContent = population;
     }
     if (item === 'Native Name') {
-      let i = Object.values(data.name.nativeName);
+      let i = Object.values(name.nativeName);
       i.forEach(nN => {
         clone.querySelector('.modal__Pop').textContent = nN.common;
       });
     }
     if (item === 'Region') {
-      clone.querySelector('.modal__Pop').textContent = data.region;
+      clone.querySelector('.modal__Pop').textContent = region;
     }
     if (item === 'Sub Region') {
-      clone.querySelector('.modal__Pop').textContent = data.subregion;
+      clone.querySelector('.modal__Pop').textContent = subregion;
     }
     if (item === 'Capital') {
-      clone.querySelector('.modal__Pop').textContent = data.capital;
+      clone.querySelector('.modal__Pop').textContent = capital;
     }
     if (item === 'Top Level Domain') {
-      clone.querySelector('.modal__Pop').textContent = data.tld;
+      clone.querySelector('.modal__Pop').textContent = tld;
     }
     if (item === 'Currencies') {
       let crr = Object.values(data.currencies);
@@ -228,7 +224,7 @@ const mostrarDescripcion = data => {
     fragmentModal.appendChild(clone);
   });
 
-  modal__des_p1.appendChild(fragmentModal);
+  modal__des_p2.appendChild(fragmentModal);
 };
 
 const mostrarBorders = pais => {
@@ -240,7 +236,7 @@ const mostrarBorders = pais => {
   if (pais.borders) {
     pais.borders.forEach(bor => {
       const clone = template__bordersModal.content.cloneNode(true);
-      clone.querySelector('.modal_Bor').textContent = paisCca3(bor);
+      clone.querySelector('.modal_Bor').textContent = paisCca4(bor);
       fragment.appendChild(clone);
     });
   } else {
@@ -251,7 +247,7 @@ const mostrarBorders = pais => {
   container.appendChild(fragment);
 };
 
-const paisCca3 = cca3Pais => {
+const paisCca4 = cca3Pais => {
   let border = datos.filter(item => {
     if (item.cca3 === cca3Pais) {
       return item;
@@ -259,5 +255,6 @@ const paisCca3 = cca3Pais => {
       return;
     }
   });
+  console.log(border);
   return border[0].name.common;
 };
