@@ -56,7 +56,9 @@ document.addEventListener('keyup', e => {
 
 const cacheTema =
   localStorage.getItem('theme') ||
-  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  (window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light');
 if (cacheTema) {
   document.documentElement.setAttribute('data-theme', cacheTema);
 }
@@ -103,7 +105,9 @@ const cambiarRegion = e => {
 };
 
 const mostrarCards = data => {
-  const template__countries = document.getElementById('template__countries');
+  const template__countries = document.getElementById(
+    'template__countries',
+  );
   const fragment = document.createDocumentFragment();
   const cards__countries = document.querySelector('.cards__countries');
 
@@ -149,7 +153,9 @@ const mostrarModal = paisModal => {
   let data = datos.filter(pais => {
     const clone = template__modal.content.cloneNode(true);
     if (pais.name.common === paisModal) {
-      clone.querySelector('.modal__pais img').setAttribute('src', pais.flags.png);
+      clone
+        .querySelector('.modal__pais img')
+        .setAttribute('src', pais.flags.png);
       clone.querySelector('.modal__des h4').textContent = pais.name.common;
       fragment.appendChild(clone);
       return clone;
@@ -171,7 +177,9 @@ const mostrarDescripcion = data => {
     'Currencies',
     'Languages',
   ];
-  const template__spanModal = document.getElementById('template__spanModal');
+  const template__spanModal = document.getElementById(
+    'template__spanModal',
+  );
   const fragmentModal = document.createDocumentFragment();
   const modal__des_p2 = document.querySelector('.modal__des-p1');
 
@@ -210,7 +218,8 @@ const mostrarDescripcion = data => {
       crr.forEach(ee => {
         namesCurrencies.push(ee.name);
       });
-      clone.querySelector('.modal__Pop').textContent = namesCurrencies.join(',');
+      clone.querySelector('.modal__Pop').textContent =
+        namesCurrencies.join(',');
     }
     if (item === 'Languages') {
       let lang = Object.values(data.languages);
@@ -218,7 +227,8 @@ const mostrarDescripcion = data => {
       lang.forEach(ee => {
         allLanguages.push(ee);
       });
-      clone.querySelector('.modal__Pop').textContent = allLanguages.join(',');
+      clone.querySelector('.modal__Pop').textContent =
+        allLanguages.join(',');
     }
 
     fragmentModal.appendChild(clone);
@@ -228,7 +238,9 @@ const mostrarDescripcion = data => {
 };
 
 const mostrarBorders = pais => {
-  const template__bordersModal = document.getElementById('template__bordersModal');
+  const template__bordersModal = document.getElementById(
+    'template__bordersModal',
+  );
   const fragment = document.createDocumentFragment();
   const container = document.querySelector('.modal__des-p2-l');
 
@@ -241,7 +253,8 @@ const mostrarBorders = pais => {
     });
   } else {
     const clone = template__bordersModal.content.cloneNode(true);
-    clone.querySelector('.modal_Bor').textContent = 'No bordering countries';
+    clone.querySelector('.modal_Bor').textContent =
+      'No bordering countries';
     fragment.appendChild(clone);
   }
   container.appendChild(fragment);
